@@ -39,3 +39,22 @@ LOAD DATA LOCAL INPATH 'tbl1.csv' INTO TABLE tbl1;
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+
+DROP TABLE IF EXISTS t4;
+CREATE TABLE t4 AS
+WITH t0 AS(
+SELECT 
+ c1,letra,numero
+FROM tbl1 LATERAL VIEW explode(c4) adTable AS letra,numero
+)
+SELECT 
+ tbl0.c1,tbl0.c2,t0.numero
+FROM tbl0 
+LEFT JOIN t0 ON (tbl0.c1= t0.c1 and tbl0.c2 =t0.letra);
+
+INSERT OVERWRITE LOCAL DIRECTORY 'output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+COLLECTION ITEMS TERMINATED BY ':'
+SELECT  * FROM t4;
+
+   

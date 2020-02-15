@@ -26,4 +26,9 @@
 fs -rm -f -r output;
 -- 
 --  >>> Escriba su respuesta a partir de este punto <<<
--- 
+alldata = LOAD 'truck_event_text_partition.csv' USING PigStorage(',')
+   AS (driverId:INT,truckId:INT,eventTime:CHARARRAY,eventType:CHARARRAY,longitude:INT,latitude:INT,eventKey:CHARARRAY,correlationId:CHARARRAY,driverName:CHARARRAY,routeId:INT,routeName:CHARARRAY,eventDate:CHARARRAY);
+data = LIMIT alldata 10; 
+numero= ORDER data BY $0,$1,$2;
+top = FOREACH numero GENERATE $0,$1,$2;
+STORE top INTO 'output' USING PigStorage(',');

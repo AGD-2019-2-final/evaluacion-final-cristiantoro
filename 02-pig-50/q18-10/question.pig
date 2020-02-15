@@ -26,4 +26,9 @@ u = LOAD 'data.csv' USING PigStorage(',')
         quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+data = LOAD 'data.csv' USING PigStorage(',')  
+   AS (f1:INT, f2:CHARARRAY, f3:CHARARRAY, f4:CHARARRAY, f5:CHARARRAY, f6:INT);
+r = FOREACH data GENERATE f2, f5;
+y =  FILTER r BY NOT $1 IN ('blue', 'black');
+result = FOREACH y GENERATE $0, $1;
+STORE result INTO 'output' USING PigStorage(',');

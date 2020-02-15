@@ -25,7 +25,8 @@
 -- 
 -- Escriba el resultado a la carpeta `output` del directorio actual.
 -- 
-fs -rm -f -r output;
---
 
-
+data = LOAD 'data.csv' USING PigStorage(',')  
+   AS (f1:INT, f2:CHARARRAY, f3:CHARARRAY, f4:CHARARRAY, f5:CHARARRAY, f6:INT);
+r = FOREACH data GENERATE CONCAT(f2,'@',f3);
+STORE r INTO 'output';

@@ -37,4 +37,8 @@ u = LOAD 'data.csv' USING PigStorage(',')
         quantity:INT);
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
---
+data = LOAD 'data.csv' USING PigStorage(',')  
+   AS (f1:INT, f2:CHARARRAY, f3:CHARARRAY, f4:CHARARRAY, f5:CHARARRAY, f6:INT);
+r = FOREACH data GENERATE f3, UPPER(f3), LOWER(f3);
+y =  ORDER r BY  $0 ;
+STORE y INTO 'output' USING PigStorage(',');
